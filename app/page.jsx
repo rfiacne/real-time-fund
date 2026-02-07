@@ -2563,22 +2563,18 @@ export default function HomePage() {
     isLoggingOutRef.current = true;
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        await supabase.auth.signOut({ scope: 'local' });
-        setUserMenuOpen(false);
-        setUser(null);
-        return;
+      if (session) {
+        const { error } = await supabase.auth.signOut();
+        if (error && error.code !== 'session_not_found') {
+          throw error;
+        }
       }
-      const { error } = await supabase.auth.signOut();
-      if (error?.code === 'session_not_found') {
-        await supabase.auth.signOut({ scope: 'local' });
-      } else if (error) {
-        throw error;
-      }
-      setUserMenuOpen(false);
-      setUser(null);
     } catch (err) {
       console.error('登出失败', err);
+    } finally {
+      try {
+        await supabase.auth.signOut({ scope: 'local' });
+      } catch { }
       setUserMenuOpen(false);
       setUser(null);
     }
