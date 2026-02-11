@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ANNOUNCEMENT_KEY = 'hasClosedAnnouncement_v6';
+const ANNOUNCEMENT_KEY = 'hasClosedAnnouncement_v7';
 
 export default function Announcement() {
   const [isVisible, setIsVisible] = useState(false);
@@ -62,16 +62,14 @@ export default function Announcement() {
               </svg>
               <span>公告</span>
             </div>
-            
             <div style={{ color: 'var(--text)', lineHeight: '1.6', fontSize: '15px' }}>
-              感谢大家反馈的需求，现已增加如下功能：
-              <p>1. 邮箱账号登录，以支持同步本地数据至云端。</p>
-              <p>2. 加减仓。</p>
-              <p>3. 版本更新提示。</p>
-              <p>4. 性能优化。</p>
-              以下功能会在下一个版本上线：
+              因为节前放假因素，所以节前不会有大的功能更新调整。
+              综合目前大家的需求，以下功能将会在节后上线：
               <p>1. 定投。</p>
-              <p>2. 基金历史 K 线。</p>
+              <p>2. 自定义内容展示布局。</p>
+              <p>3. 基金历史曲线图。</p>
+              <p>4. 基金实时估值曲线。</p>
+              <p>5. OCR 识别截图导入基金。</p>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>

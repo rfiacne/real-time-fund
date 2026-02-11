@@ -5084,18 +5084,6 @@ export default function HomePage() {
 
             <form onSubmit={handleSendOtp}>
               <div className="form-group" style={{ marginBottom: 16 }}>
-                <div style={{
-                  marginBottom: 12,
-                  padding: '8px 12px',
-                  background: 'rgba(230, 162, 60, 0.1)',
-                  border: '1px solid rgba(230, 162, 60, 0.2)',
-                  borderRadius: '4px',
-                  fontSize: '0.8rem',
-                  color: '#e6a23c',
-                  lineHeight: '1.4'
-                }}>
-                  ⚠️ 登录功能目前正在测试，使用过程中如遇到问题欢迎大家在 <a href="https://github.com/hzm0321/real-time-fund/issues" target="_blank" style={{ textDecoration: 'underline', color: 'inherit' }}>Github</a> 上反馈
-                </div>
                 <div className="muted" style={{ marginBottom: 8, fontSize: '0.8rem' }}>
                   请输入邮箱，我们将发送验证码到您的邮箱
                 </div>

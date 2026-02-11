@@ -1,6 +1,6 @@
 # 实时基金估值 (Real-time Fund Valuation)
 
-一个基于 Next.js 开发的纯前端基金估值与重仓股实时追踪工具。采用玻璃拟态设计（Glassmorphism），支持移动端适配，且无需后端服务器即可运行。
+一个基于 Next.js 开发的纯前端基金估值与重仓股实时追踪工具。采用玻璃拟态设计（Glassmorphism），支持移动端适配。
 预览地址：[https://hzm0321.github.io/real-time-fund/](https://hzm0321.github.io/real-time-fund/)
 
 ## ✨ 特性
@@ -56,18 +56,23 @@
    访问 [http://localhost:3000](http://localhost:3000) 查看效果。
 
 ### supabase 配置说明
-1. 邮件数量修改
+1. NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_ANON_KEY 获取
+
+   NEXT_PUBLIC_SUPABASE_URL：supabase控制台 → Project Settings → General → Project ID  
+   NEXT_PUBLIC_SUPABASE_ANON_KEY： supabase控制台 → Project Settings → API Keys → Publishable key
+
+2. 邮件数量修改
 
     supabase 免费项目自带每小时2条邮件服务。如果觉得额度不够，可以改成自己的邮箱SMTP。修改路径在 supabase控制台 → Authentication → Email → SMTP Settings。  
     之后可在 Rate Limits ，自由修改每小时邮件数量。
 
-2. 修改接收到的邮件为验证码
-在 supabase控制台 → Authentication → Email → Confirm sign up，选择 `{{.token}}`。  
+3. 修改接收到的邮件为验证码  
 
-3. 目前项目用到的 sql 语句，查看项目 supabase.sql 文件。
+    在 supabase控制台 → Authentication → Email → Confirm sign up，选择 `{{.token}}`。  
+
+4. 目前项目用到的 sql 语句，查看项目 supabase.sql 文件。
 
 更多 supabase 相关内容查阅官方文档。
-
 
 ### 构建与部署
 
@@ -82,18 +87,23 @@ npm run build
 
 ### Docker运行
 
-1. 构建镜像
-```
+需先配置环境变量（与本地开发一致），否则构建出的镜像中 Supabase 等配置为空。可复制 `env.example` 为 `.env` 并填入实际值；若不用登录/反馈功能可留空。
+
+1. 构建镜像（构建时会读取当前环境或同目录 `.env` 中的变量）
+```bash
 docker build -t real-time-fund .
+# 或通过 --build-arg 传入，例如：
+# docker build -t real-time-fund --build-arg NEXT_PUBLIC_SUPABASE_URL=xxx --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx .
 ```
 
 2. 启动容器
-```
+```bash
 docker run -d -p 3000:3000 --name fund real-time-fund
 ```
 
-#### docker-compose
-```
+#### docker-compose（会读取同目录 `.env` 作为 build-arg 与运行环境）
+```bash
+# 建议先：cp env.example .env 并编辑 .env
 docker compose up -d
 ```
 
