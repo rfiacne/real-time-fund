@@ -3820,6 +3820,7 @@ export default function HomePage() {
             onClose={() => setScanConfirmModalOpen(false)}
             onToggle={toggleScannedCode}
             onConfirm={confirmScanImport}
+            refreshing={refreshing}
           />
         )}
       </AnimatePresence>
