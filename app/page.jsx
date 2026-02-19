@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo, useLayoutEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { createWorker } from 'tesseract.js';
 import { createAvatar } from '@dicebear/core';
 import { glass } from '@dicebear/collection';
@@ -514,8 +515,8 @@ export default function HomePage() {
 
   useEffect(() => {
     checkTradingDay();
-    // 每分钟检查一次
-    const timer = setInterval(checkTradingDay, 60000);
+    // 每30分钟检查一次
+    const timer = setInterval(checkTradingDay, 60000 * 30);
     return () => clearInterval(timer);
   }, []);
 
@@ -2768,10 +2769,13 @@ export default function HomePage() {
               {user ? (
                 <div className="user-avatar-small">
                   {userAvatar ? (
-                    <img
+                    <Image
                       src={userAvatar}
                       alt="用户头像"
-                      style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+                      width={20}
+                      height={20}
+                      unoptimized
+                      style={{ borderRadius: '50%' }}
                     />
                   ) : (
                     (user.email?.charAt(0).toUpperCase() || 'U')
@@ -2797,10 +2801,13 @@ export default function HomePage() {
                       <div className="user-menu-header">
                         <div className="user-avatar-large">
                           {userAvatar ? (
-                            <img
+                            <Image
                               src={userAvatar}
                               alt="用户头像"
-                              style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+                              width={40}
+                              height={40}
+                              unoptimized
+                              style={{ borderRadius: '50%' }}
                             />
                           ) : (
                             (user.email?.charAt(0).toUpperCase() || 'U')

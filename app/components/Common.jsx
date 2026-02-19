@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -227,19 +228,25 @@ export function DonateTabs() {
           justifyContent: 'center'
         }}
       >
-        {method === 'alipay' ? (
-          <img
-            src={zhifubaoImg.src}
-            alt="支付宝收款码"
-            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          />
-        ) : (
-          <img
-            src={weixinImg.src}
-            alt="微信收款码"
-            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          />
-        )}
+        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+          {method === 'alipay' ? (
+            <Image
+              src={zhifubaoImg}
+              alt="支付宝收款码"
+              fill
+              sizes="184px"
+              style={{ objectFit: 'contain' }}
+            />
+          ) : (
+            <Image
+              src={weixinImg}
+              alt="微信收款码"
+              fill
+              sizes="184px"
+              style={{ objectFit: 'contain' }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

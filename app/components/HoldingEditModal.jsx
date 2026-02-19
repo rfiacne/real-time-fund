@@ -28,7 +28,7 @@ export default function HoldingEditModal({ fund, holding, onClose, onSave }) {
         setProfit(p.toFixed(2));
       }
     }
-  }, [holding, fund]);
+  }, [holding, fund, dwjz]);
 
   const handleModeChange = (newMode) => {
     if (newMode === mode) return;

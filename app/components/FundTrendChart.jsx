@@ -66,7 +66,7 @@ export default function FundTrendChart({ code, isExpanded, onToggleExpand }) {
 
     }
     return () => { active = false; };
-  }, [code, range, isExpanded]);
+  }, [code, range, isExpanded, data.length]);
 
   const ranges = [
     { label: '近1月', value: '1m' },
