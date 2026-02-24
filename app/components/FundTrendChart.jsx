@@ -238,25 +238,7 @@ export default function FundTrendChart({ code, isExpanded, onToggleExpand, trans
 
         // 仅用于桌面端 hover 改变光标，不在这里做 2 秒清除，避免移动端 hover 事件不稳定
       },
-      onClick: (_event, _elements, chart) => {
-        const currentChart = chart || chartRef.current;
-        if (!currentChart) return;
-
-        if (hoverTimeoutRef.current) {
-          clearTimeout(hoverTimeoutRef.current);
-          hoverTimeoutRef.current = null;
-        }
-
-        hoverTimeoutRef.current = setTimeout(() => {
-          const c = chartRef.current || currentChart;
-          if (!c) return;
-          c.setActiveElements([]);
-          if (c.tooltip) {
-            c.tooltip.setActiveElements([], { x: 0, y: 0 });
-          }
-          c.update();
-        }, 2000);
-      }
+      onClick: () => {}
     };
   }, []);
 
@@ -270,6 +252,27 @@ export default function FundTrendChart({ code, isExpanded, onToggleExpand, trans
 
   const plugins = useMemo(() => [{
     id: 'crosshair',
+    afterEvent: (chart, args) => {
+      const { event, replay } = args || {};
+      if (!event || replay) return; // 忽略动画重放
+    
+      const type = event.type;
+      if (type === 'mousemove' || type === 'click') {
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+          hoverTimeoutRef.current = null;
+        }
+    
+        hoverTimeoutRef.current = setTimeout(() => {
+          if (!chart) return;
+          chart.setActiveElements([]);
+          if (chart.tooltip) {
+            chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+          }
+          chart.update();
+        }, 2000);
+      }
+    },
     afterDraw: (chart) => {
       const ctx = chart.ctx;
       const datasets = chart.data.datasets;
