@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { cachedRequest, clearCachedRequest } from '../lib/cacheRequest';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -19,23 +20,58 @@ const nowInTz = () => dayjs().tz(TZ);
 const toTz = (input) => (input ? dayjs.tz(input, TZ) : nowInTz());
 
 export const loadScript = (url) => {
-  return new Promise((resolve, reject) => {
-    if (typeof document === 'undefined' || !document.body) return resolve();
-    const script = document.createElement('script');
-    script.src = url;
-    script.async = true;
-    const cleanup = () => {
-      if (document.body.contains(script)) document.body.removeChild(script);
-    };
-    script.onload = () => {
-      cleanup();
-      resolve();
-    };
-    script.onerror = () => {
-      cleanup();
-      reject(new Error('数据加载失败'));
-    };
-    document.body.appendChild(script);
+  if (typeof document === 'undefined' || !document.body) return Promise.resolve();
+
+  let cacheKey = url;
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.delete('_');
+    parsed.searchParams.delete('_t');
+    cacheKey = parsed.toString();
+  } catch (e) {
+  }
+
+  const cacheTime = 10 * 60 * 1000;
+
+  return cachedRequest(
+    () =>
+      new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+
+        const cleanup = () => {
+          if (document.body.contains(script)) document.body.removeChild(script);
+        };
+
+        script.onload = () => {
+          cleanup();
+          let apidata;
+          try {
+            apidata = window?.apidata ? JSON.parse(JSON.stringify(window.apidata)) : undefined;
+          } catch (e) {
+            apidata = window?.apidata;
+          }
+          resolve({ ok: true, apidata });
+        };
+
+        script.onerror = () => {
+          cleanup();
+          resolve({ ok: false, error: '数据加载失败' });
+        };
+
+        document.body.appendChild(script);
+      }),
+    cacheKey,
+    { cacheTime }
+  ).then((result) => {
+    if (!result?.ok) {
+      clearCachedRequest(cacheKey);
+      throw new Error(result?.error || '数据加载失败');
+    }
+    if (typeof window !== 'undefined' && result.apidata !== undefined) {
+      window.apidata = result.apidata;
+    }
   });
 };
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { CloseIcon } from './Icons';
 import weChatGroupImg from '../assets/weChatGroup.jpg';
 
@@ -34,7 +35,12 @@ export default function WeChatModal({ onClose }) {
           </button>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img src={weChatGroupImg.src} alt="WeChat Group" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+          <Image
+            src={weChatGroupImg}
+            alt="WeChat Group"
+            sizes="(max-width: 360px) 100vw, 360px"
+            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+          />
         </div>
         <p className="muted" style={{ textAlign: 'center', marginTop: 16, fontSize: '14px' }}>
           扫码加入群聊，获取最新更新与交流

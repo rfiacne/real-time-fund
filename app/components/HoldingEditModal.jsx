@@ -28,7 +28,7 @@ export default function HoldingEditModal({ fund, holding, onClose, onSave }) {
         setProfit(p.toFixed(2));
       }
     }
-  }, [holding, fund]);
+  }, [holding, fund, dwjz]);
 
   const handleModeChange = (newMode) => {
     if (newMode === mode) return;
@@ -158,6 +158,7 @@ export default function HoldingEditModal({ fund, holding, onClose, onSave }) {
                 </label>
                 <input
                   type="number"
+                  inputMode="decimal"
                   step="any"
                   className={`input ${!amount ? 'error' : ''}`}
                   value={amount}
@@ -192,6 +193,7 @@ export default function HoldingEditModal({ fund, holding, onClose, onSave }) {
                 </label>
                 <input
                   type="number"
+                  inputMode="decimal"
                   step="any"
                   className={`input ${!share ? 'error' : ''}`}
                   value={share}
@@ -209,6 +211,7 @@ export default function HoldingEditModal({ fund, holding, onClose, onSave }) {
                 </label>
                 <input
                   type="number"
+                  inputMode="decimal"
                   step="any"
                   className={`input ${!cost ? 'error' : ''}`}
                   value={cost}
